@@ -2,17 +2,20 @@
 using N5ChallengeFullStack.Dto;
 using N5ChallengeFullStack.Model;
 using N5ChallengeFullStack.Repository;
+using Nest;
 
 namespace N5ChallengeFullStack.Service
 {
     public class PemissionService 
     {
         private readonly UniOfWork _UnitOfWork;
-        private readonly IRepository<Permission> _rep;
-        public PemissionService( UniOfWork _unit_of_work, IRepository<Permission> _repository)
+        private readonly Repository.IRepository<Permission> _rep;
+        private readonly ElasticSearchService<Permission> _elasticSearchService;
+        public PemissionService( UniOfWork _unit_of_work, Repository.IRepository<Permission> _repository, ElasticSearchService<Permission> _elastic_search_service)
         {
             _UnitOfWork = _unit_of_work;
             _rep = _repository;
+            _elasticSearchService = _elastic_search_service;
 
         }
         public PermissionDto AddEntity(Permission _entity)
@@ -21,6 +24,7 @@ namespace N5ChallengeFullStack.Service
             {
                  _rep.AddEntity(_entity);
                 _UnitOfWork.Commit();
+                _elasticSearchService.IndexDocumentAsync(_entity);
             }
             catch (Exception ex)
             {
@@ -46,6 +50,7 @@ namespace N5ChallengeFullStack.Service
             }
             _rep.Update(entity);
             _UnitOfWork.Commit();
+            _elasticSearchService.IndexDocumentAsync(_entity);
             return true;
 
         }

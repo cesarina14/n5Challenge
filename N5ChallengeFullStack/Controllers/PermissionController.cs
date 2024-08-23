@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using N5ChallengeFullStack.Common;
-using N5ChallengeFullStack.Dto;
 using N5ChallengeFullStack.Model;
 using N5ChallengeFullStack.Service;
 
@@ -35,4 +34,4 @@ namespace N5ChallengeFullStack.Controllers
             return Ok(_Service.Remove(_id));
         }
     }
-  }
+}
