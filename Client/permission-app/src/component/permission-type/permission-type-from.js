@@ -11,6 +11,7 @@ const PermissionTypeForm = ({ onSubmit, onCancel }) => {
     const newPermissionType = await createPermissionType({ name,description });
     onSubmit && onSubmit(newPermissionType);
     setName('');
+    setDescription('');
   };
 
   return (

@@ -43,7 +43,7 @@ namespace N5ChallengeFullStack.Service
                 await _unitOfWork.Commit();
                 await _elasticSearchService.IndexDocumentAsync(_entity);
 
-                return new PermissionDto(_entity);
+                return new PermissionDto(_entity.Name, _entity.Description,_entity.PermissionTypeId);
             }
             catch (Exception ex)
             {
@@ -55,7 +55,7 @@ namespace N5ChallengeFullStack.Service
         public List<PermissionDto> GetList()
         {
             var list =  _repository.ListAll();
-            return list.Select(p => new PermissionDto(p)).ToList();
+            return list.Select(p => new PermissionDto(p.Name,p.Description,p.PermissionTypeId)).ToList();
         }
 
         public async Task<bool> UpdateEntityAsync(PermissionDto _dto)
@@ -76,8 +76,8 @@ namespace N5ChallengeFullStack.Service
 
         public PermissionDto GetSingle(long id)
         {
-            var entity =  _repository.GetSingle(id);
-            return entity == null ? null : new PermissionDto(entity);
+            var _entity =  _repository.GetSingle(id);
+            return _entity == null ? null : new PermissionDto(_entity.Name, _entity.Description, _entity.PermissionTypeId);
         }
 
         public async Task<bool> Remove(long id)

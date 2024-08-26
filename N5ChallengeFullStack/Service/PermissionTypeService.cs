@@ -39,7 +39,7 @@ namespace N5ChallengeFullStack.Service
                 _respo.AddEntity(_entity);
                 _UnitOfWork.Commit();
                 var response = _elasticSearchService.IndexDocumentAsync(_entity).GetAwaiter();
-                return new PermissionTypeDto(_entity);
+                return new PermissionTypeDto(_entity.Name,_entity.Description);
 
 
             }
@@ -55,7 +55,7 @@ namespace N5ChallengeFullStack.Service
         public List<PermissionTypeDto> GetList()
         {
             var _list = _respo.ListAll();
-            var _dtoList = _list.Select(_p => new PermissionTypeDto(_p)).ToList();
+            var _dtoList = _list.Select(_p => new PermissionTypeDto(_p.Name, _p.Description)).ToList();
             return _dtoList;
         }
 
@@ -78,7 +78,7 @@ namespace N5ChallengeFullStack.Service
             var _entity = _respo.GetSingle(Id);
             if (_entity == null) return null;
 
-            return new PermissionTypeDto(_entity);
+            return new PermissionTypeDto(_entity.Name, _entity.Description);
 
         }
         public bool Remove(long Id)
