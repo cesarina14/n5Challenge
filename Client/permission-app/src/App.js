@@ -1,25 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import PermissionList from './component/permision/permision-list'; 
+import PermissionTypeList from './component/permission-type/permission-type-list'; 
+import './style.css'; // Add your styles here
 
-function App() {
+const App = () => {
+  const [activeTab, setActiveTab] = useState('permissions');
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <div className="app">
+      <div className="tabs">
+        <button
+          className={`tab-button ${activeTab === 'permissions' ? 'active' : ''}`}
+          onClick={() => setActiveTab('permissions')}
         >
-          Learn React
-        </a>
-      </header>
+          Permissions
+        </button>
+        <button
+          className={`tab-button ${activeTab === 'permissionTypes' ? 'active' : ''}`}
+          onClick={() => setActiveTab('permissionTypes')}
+        >
+          Permission Types
+        </button>
+      </div>
+      <div className="tab-content">
+        {activeTab === 'permissions' && <PermissionList />}
+        {activeTab === 'permissionTypes' && <PermissionTypeList />}
+      </div>
     </div>
   );
-}
+};
 
 export default App;

@@ -1,0 +1,13 @@
+/* Styles for PermissionForm */
+.permission-form {
+    margin-bottom: 20px;
+  }
+  
+  input, select {
+    margin-right: 10px;
+  }
+  
+  button {
+    margin: 5px;
+  }
+  

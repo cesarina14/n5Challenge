@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using N5ChallengeFullStack.Common;
+using N5ChallengeFullStack.Dto;
 using N5ChallengeFullStack.Model;
 using N5ChallengeFullStack.Service;
 
 namespace N5ChallengeFullStack.Controllers
 {
-
+    [ApiController]
+    [Route("api/permissiontype")]
     public class PermissionTypeController : ControllerBase
     {
         private readonly PermissionTypeService _Service;
@@ -14,7 +16,7 @@ namespace N5ChallengeFullStack.Controllers
             _Service = _service;
         }
         [HttpPost(CommonAction.ADD)]
-        public ActionResult add(PermissionType _entity)
+        public ActionResult add(PermissionTypeDto _entity)
         {
             return Ok(_Service.AddEntity(_entity));
         }
@@ -24,7 +26,7 @@ namespace N5ChallengeFullStack.Controllers
             return Ok(_Service.GetSingle(_id));
         }
         [HttpPut(CommonAction.UPDATE)]
-        public ActionResult Update(PermissionType _entity)
+        public ActionResult Update(PermissionTypeDto _entity)
         {
             return Ok(_Service.UpdateEntity(_entity));
 
@@ -33,6 +35,11 @@ namespace N5ChallengeFullStack.Controllers
         public ActionResult Remove(long _id)
         {
             return Ok(_Service.Remove(_id));
+        }
+        [HttpGet(CommonAction.LIST)]
+        public ActionResult List()
+        {
+            return Ok(_Service.GetList());
         }
     }
 

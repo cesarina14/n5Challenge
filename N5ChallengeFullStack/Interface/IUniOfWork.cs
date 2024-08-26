@@ -2,9 +2,9 @@
 
 namespace N5ChallengeFullStack.Repository
 {
-    public interface IUnitOfWork
+    public interface IUnitOfWork : IDisposable
     {
-        IRepository<T> GetRepository<T>() where T : class;
+     
         Task<int> Commit();
     }
 }

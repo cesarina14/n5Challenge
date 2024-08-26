@@ -11,34 +11,45 @@ namespace N5ChallengeFullStack.Service
     public class PermissionTypeService
     {
 
-        private readonly UniOfWork _UnitOfWork;
-        private readonly Repository.IRepository<PermissionType> _respo;
+        private readonly UnitOfWork _UnitOfWork;
+        private readonly Repository<PermissionType> _respo;
         private readonly ElasticSearchService<PermissionType> _elasticSearchService;
-        public PermissionTypeService(UniOfWork _unit_of_work, Repository.IRepository<PermissionType> _repository, ElasticSearchService<PermissionType> _elastic_search_service)
+        public PermissionTypeService(UnitOfWork _unit_of_work,
+            Repository<PermissionType> _repository,
+            ElasticSearchService<PermissionType> _elastic_search_service)
         {
             _UnitOfWork = _unit_of_work;
             _respo = _repository;
             _elasticSearchService = _elastic_search_service;
 
         }
-        public PermissionTypeDto AddEntity(PermissionType _entity)
+        public PermissionTypeDto AddEntity(PermissionTypeDto _dto)
         {
             try
             {
+                var _entity = new PermissionType
+                {
+                    Name = _dto.Name,
+                    Description = _dto.Description,
+                    CreatedAt = DateTime.Now,
+                    UpdatedAt = DateTime.Now,
+                    CreatedBy = "test",
+                    UpdatedBy = "test",
+                };
                 _respo.AddEntity(_entity);
                 _UnitOfWork.Commit();
                 var response = _elasticSearchService.IndexDocumentAsync(_entity).GetAwaiter();
-            
+                return new PermissionTypeDto(_entity);
 
-            
+
             }
             catch (Exception ex)
             {
                 return null;
-               /// save exception to log
+                /// save exception to log
             }
-            return new PermissionTypeDto(_entity);
-          
+
+
         }
 
         public List<PermissionTypeDto> GetList()
@@ -48,14 +59,17 @@ namespace N5ChallengeFullStack.Service
             return _dtoList;
         }
 
-        public bool UpdateEntity(PermissionType entity)
+        public async Task<bool> UpdateEntity(PermissionTypeDto _dto)
         {
-            var _entity = _respo.GetSingle(entity.Id);
+            var _entity = _respo.GetSingle(_dto.Id);
             if (_entity == null) return false;
- 
-            _respo.Update(entity);
-            _UnitOfWork.Commit();
-            _elasticSearchService.IndexDocumentAsync(_entity).GetAwaiter();
+
+            _entity.Description = _dto.Description;
+            _entity.Name = _dto.Name;
+            _entity.UpdatedAt = DateTime.Now;
+            _respo.Update(_entity);
+            await _UnitOfWork.Commit();
+            await _elasticSearchService.IndexDocumentAsync(_entity);
             return true;
 
         }
@@ -73,7 +87,7 @@ namespace N5ChallengeFullStack.Service
             if (_entity == null) return false;
             _respo.Remove(_entity);
             _UnitOfWork.Commit();
-   
+
             return true;
 
         }

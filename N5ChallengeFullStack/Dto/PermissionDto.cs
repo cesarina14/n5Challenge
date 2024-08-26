@@ -7,7 +7,7 @@ namespace N5ChallengeFullStack.Dto
         public long Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public long? PermissionTypeId { get; set; }
+        public long PermissionTypeId { get; set; }
         public PermissionDto( Permission _entity)
         {
             Id = _entity.Id;
