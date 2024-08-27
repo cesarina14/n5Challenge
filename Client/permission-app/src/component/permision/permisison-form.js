@@ -41,7 +41,7 @@ const PermissionForm = ({ permission = {}, onSubmit, onCancel, permissionTypes }
       >
         <option value="" disabled>Select Permission Type</option>
         {permissionTypes.map(type => (
-          <option key={type.id} value={type.id}>{type.name}</option>
+          <option key={type.id} value={type.id}>{type.description}</option>
         ))}
       </select>
       <button type="submit">{permission.id ? 'Update' : 'Add'} Permission</button>
